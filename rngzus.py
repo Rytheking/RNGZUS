@@ -26,7 +26,7 @@ async def on_error(event, *args, **kwargs):
             raise
 
 
-@bot.command(name='rngzus', help='takes a comma sepearted list of users and will choose 1 to win a give away')
+@bot.command(name='rngzus', help='takes a timedelay in seconds and after that selects 1 random user from reactions')
 async def give_away(ctx, timedelay: int):
     response="react to this message"
     message = await ctx.send(response)
