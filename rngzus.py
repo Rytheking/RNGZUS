@@ -1,6 +1,7 @@
 import os
 import random
 import discord
+import time
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -9,7 +10,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 bot = commands.Bot(command_prefix='!')
-
+channel_id=945685026207584279
 
 @bot.event
 async def on_ready():
@@ -25,25 +26,18 @@ async def on_error(event, *args, **kwargs):
             raise
 
 
-@bot.command(name='99')
-async def nine_nine(ctx):
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-    ]
-
-    response = random.choice(brooklyn_99_quotes)
-    await ctx.send(response)
-
 @bot.command(name='rngzus', help='takes a comma sepearted list of users and will choose 1 to win a give away')
-async def give_away(ctx, list_of_users: str):
-    arr = list_of_users.split(',')
-    response = random.choice(arr)
-    await ctx.send(response)
-
+async def give_away(ctx, timedelay: int):
+    response="react to this message"
+    message = await ctx.send(response)
+    message_id=message.id
+    users = []
+    time.sleep(timedelay)
+    message = await ctx.fetch_message(message_id)
+    for reaction in message.reactions:
+        async for user in reaction.users():
+            users.append(user)
+    response = random.choice(users).name
+    await ctx.send('@'+str(response))
 
 bot.run(TOKEN)
